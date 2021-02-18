@@ -1,0 +1,15 @@
+version: 0.2
+
+env:
+  variables:
+    TF_ROOT: '${CODEBUILD_SRC_DIR}'
+
+phases:
+  install:
+    commands:
+      - cd '${CODEBUILD_SRC_DIR}'
+      - gitlab-terraform init
+
+cache:
+  paths:
+    - '${CODEBUILD_SRC_DIR}/.terraform'
