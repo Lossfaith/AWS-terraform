@@ -9,6 +9,9 @@ phases:
     commands:
       - cd $CODEBUILD_SRC_DIR
       - gitlab-terraform init
+      - gitlab-terraform validate
+      - gitlab-terraform plan
+      - gitlab-terraform apply
 
 cache:
   paths:
