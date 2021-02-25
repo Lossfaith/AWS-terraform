@@ -18,6 +18,16 @@ provider "aws" {
   region = var.region
 }
 data "data_availability_zones" "Zones" {}
+data "aws_ami" "ubuntu" {
+  most_recent = true
+
+  filter {
+    name = "name"
+    values = [
+      "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+  owners = ["099720109477"]
+}
 #--------------------------------------------------------
 resource "aws_security_group" "SerafimSecurityGroup" {
   name                  = "SecurityGroup"
@@ -51,5 +61,31 @@ resource "aws_alb" "A_Balancer" {
   name               = "Balancer_Public"
   load_balancer_type = "application"
   security_groups    = [aws_security_group.SerafimSecurityGroup.id]
-  subnets            = module.vpc.private_subnets
+  subnets            = module.vpc.public_subnets
 }
+#-----------------------------------------------
+resource "aws_instance" "FirstInstance" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t3.micro"
+  subnet_id = module.vpc.public_subnets[0]
+  tags = {
+    Name = "First"
+  }
+}
+resource "aws_instance" "SecondInstance" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t3.micro"
+  subnet_id = module.vpc.public_subnets[1]
+  tags = {
+    Name = "Second"
+  }
+}
+resource "aws_instance" "ThirdInstance" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t3.micro"
+  subnet_id = module.vpc.public_subnets[2]
+  tags = {
+    Name = "Third"
+  }
+}
+#-----------------------------------------------
