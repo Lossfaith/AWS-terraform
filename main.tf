@@ -13,7 +13,7 @@ terraform {
     key     = "terraform-test.tfstate"
   }
 }
-
+#-------------------------------------------------------
 provider "aws" {
   region = var.region
 }
@@ -62,30 +62,28 @@ resource "aws_alb" "A_Balancer" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.SerafimSecurityGroup.id]
   subnets            = module.vpc.public_subnets
+  listener{
+    lb_port = 80
+    lb_protocol = "http"
+    instance_port = 80
+    instance_protocol = "http"
+  }
+  health_check{
+    healthy_threshold = 2
+    unhealthy_threshold = 2
+    timeout = 3
+    target = "HTTP:80/"
+    interval = 10
+  }
 }
 #-----------------------------------------------
-resource "aws_instance" "FirstInstance" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
-  subnet_id = module.vpc.public_subnets[0]
-  tags = {
-    Name = "First"
-  }
-}
-resource "aws_instance" "SecondInstance" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
-  subnet_id = module.vpc.public_subnets[1]
-  tags = {
-    Name = "Second"
-  }
-}
-resource "aws_instance" "ThirdInstance" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
-  subnet_id = module.vpc.public_subnets[2]
-  tags = {
-    Name = "Third"
-  }
+resource "aws_instance" "master" {
+  count = var.count_instances
+
+  ami                  = data.aws_ami.ubuntu
+  instance_type        = "t3.micro"
+  subnet_id            = module.vpc.public_subnets[count.index % length(module.vpc.public_subnets)]
+  security_groups      = [aws_security_group.SerafimSecurityGroup.id]
+
 }
 #-----------------------------------------------
