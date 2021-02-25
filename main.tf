@@ -43,7 +43,7 @@ module "vpc" {
   cidr = "172.16.0.0/16"
 
   azs            = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
-  public_subnets = ["172.16.0.0/25", "172.16.1.0/24", "172.16.2.0/24"]
+  public_subnets = ["172.16.0.0/24", "172.16.1.0/24", "172.16.2.0/24"]
 
 }
 #----------------------------------------------
@@ -51,5 +51,5 @@ resource "aws_alb" "A_Balancer" {
   name               = "Balancer_Public"
   load_balancer_type = "application"
   security_groups    = [aws_security_group.SerafimSecurityGroup.id]
-  //subnets            = aws_subnet..id
+  subnets            = module.vpc.private_subnets
 }
