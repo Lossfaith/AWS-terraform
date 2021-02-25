@@ -84,6 +84,12 @@ resource "aws_instance" "master" {
   instance_type        = "t3.micro"
   subnet_id            = module.vpc.public_subnets[count.index % length(module.vpc.public_subnets)]
   security_groups      = [aws_security_group.SerafimSecurityGroup.id]
-
+  aws_lb_target_group = aws_lb_target_group.test.vpc_id
 }
 #-----------------------------------------------
+resource "aws_lb_target_group" "test" {
+  name     = "tf-example-lb-tg"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = module.vpc
+}
