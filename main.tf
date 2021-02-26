@@ -93,3 +93,18 @@ resource "aws_lb_target_group" "test" {
   protocol = "HTTP"
   vpc_id   = module.vpc
 }
+#---------------------------------------------
+resource "aws_lb_listener_rule" "static" {
+  listener_arn = aws_alb.A_Balancer.listener
+  priority     = 100
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.test.arn
+  }
+  condition {
+    path_pattern {
+      values = ["/static/*"]
+    }
+  }
+}
