@@ -68,6 +68,7 @@ resource "aws_alb" "A_Balancer" {
     instance_port = 80
     instance_protocol = "http"
   }
+  /*
   health_check{
     healthy_threshold = 2
     unhealthy_threshold = 2
@@ -75,6 +76,7 @@ resource "aws_alb" "A_Balancer" {
     target = "HTTP:80/"
     interval = 10
   }
+  */
 }
 #-----------------------------------------------
 resource "aws_instance" "master" {
