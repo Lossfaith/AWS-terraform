@@ -71,7 +71,6 @@ resource "aws_instance" "master" {
   instance_type       = "t3.micro"
   subnet_id           = module.vpc.public_subnets[count.index % length(module.vpc.public_subnets)]
   security_groups     = [aws_security_group.SerafimSecurityGroup.id]
-  aws_lb_target_group = aws_lb_target_group.test.vpc_id
 }
 #-----------------------------------------------
 resource "aws_lb_target_group" "test" {
@@ -79,8 +78,13 @@ resource "aws_lb_target_group" "test" {
   port     = 80
   protocol = "HTTP"
   vpc_id   = module.vpc.vpc_id
+  target_type = "instance"
 }
-
+resource "aws_lb_target_group_attachment" "test" {
+  target_group_arn = aws_lb_target_group.test.arn
+  target_id        = aws_instance.master.id
+  port             = 80
+}
 resource "aws_lb_listener" "front_end" {
   load_balancer_arn = aws_alb.balancer.arn
   port              = "80"
@@ -96,7 +100,6 @@ resource "aws_lb_listener" "front_end" {
     }
   }
 }
-#-----------------------------------------------
 resource "aws_lb_listener_rule" "static" {
   listener_arn = aws_lb_listener.front_end.arn
   priority     = 100
@@ -111,3 +114,4 @@ resource "aws_lb_listener_rule" "static" {
     }
   }
 }
+#-----------------------------------------------
