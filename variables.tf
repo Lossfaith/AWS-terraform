@@ -4,5 +4,5 @@ variable "region" {
 }
 variable "count_instances" {
   type    = string
-  default =  3
+  default = 3
 }
