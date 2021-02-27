@@ -17,7 +17,7 @@ terraform {
 provider "aws" {
   region = var.region
 }
-data "data_availability_zones" "Zones" {}
+
 data "aws_ami" "ubuntu" {
   most_recent = true
 
