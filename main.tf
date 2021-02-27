@@ -67,7 +67,7 @@ resource "aws_alb" "balancer" {
 resource "aws_instance" "master" {
   count = var.count_instances
 
-  ami             = data.aws_ami.ubuntu
+  ami             = data.aws_ami.ubuntu.id
   instance_type   = "t3.micro"
   subnet_id       = module.vpc.public_subnets[count.index % length(module.vpc.public_subnets)]
   security_groups = [aws_security_group.SerafimSecurityGroup.id]
