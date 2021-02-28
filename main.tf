@@ -114,6 +114,7 @@ resource "aws_lb_listener" "front_end" {
 
     redirect {
       port = "80"
+      path = "/"
       protocol = "HTTP"
       status_code = "HTTP_301"
     }
@@ -129,7 +130,7 @@ resource "aws_lb_listener_rule" "static" {
   }
   condition {
     path_pattern {
-      values = ["/static/*"]
+      values = ["/*"]
     }
   }
 }
