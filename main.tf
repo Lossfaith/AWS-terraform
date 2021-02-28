@@ -62,6 +62,7 @@ resource "aws_alb" "balancer" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.SerafimSecurityGroup.id]
   subnets            = module.vpc.public_subnets
+
 }
 #-----------------------------------------------
 resource "aws_instance" "master" {
@@ -89,6 +90,7 @@ resource "aws_lb_target_group" "test" {
   vpc_id      = module.vpc.vpc_id
   target_type = "instance"
   health_check {
+    path = "/"
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 3
@@ -108,12 +110,12 @@ resource "aws_lb_listener" "front_end" {
   protocol          = "HTTP"
 
   default_action {
-    type = "fixed-response"
+    type = "redirect"
 
-    fixed_response {
-      content_type = "text/plain"
-      message_body = "Fixed response content"
-      status_code  = "200"
+    redirect {
+      port = "80"
+      protocol = "HTTP"
+      status_code = "HTTP_301"
     }
   }
 }
