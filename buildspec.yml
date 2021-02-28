@@ -11,7 +11,8 @@ phases:
       - gitlab-terraform init
       - gitlab-terraform validate
       - gitlab-terraform plan
-      - gitlab-terraform apply
+#      - gitlab-terraform apply
+      - gitlab-terraform destroy
 
 cache:
   paths:
