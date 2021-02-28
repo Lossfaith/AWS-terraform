@@ -76,7 +76,7 @@ resource "aws_instance" "master" {
 yum -y update
 yum -y install httpd
 myip=`curl http://169.254.169.254/latest/meta-data/local-ipv4`
-echo "<h2> Hello! </h2><br> Artem" /index/index.html
+echo "<h2> Hello! </h2><br> Artem" /var/www/html/index.html
 sudo service httpd start
 chkconfig httpd on
 EOF
