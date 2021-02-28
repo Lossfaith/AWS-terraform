@@ -67,10 +67,19 @@ resource "aws_alb" "balancer" {
 resource "aws_instance" "master" {
   count = var.count_instances
 
-  ami             = data.aws_ami.ubuntu.id
-  instance_type   = "t3.micro"
-  subnet_id       = module.vpc.public_subnets[count.index % length(module.vpc.public_subnets)]
+  ami = data.aws_ami.ubuntu.id
+  instance_type = "t3.micro"
+  subnet_id = module.vpc.public_subnets[count.index % length(module.vpc.public_subnets)]
   security_groups = [aws_security_group.SerafimSecurityGroup.id]
+  user_data= <<EOF
+#!/bin/bash
+yum -y update
+yum -y install httpd
+myip=`curl http://169.254.169.254/latest/meta-data/local-ipv4`
+echo "<h2> Hello! </h2><br> Artem" /index/index.html
+sudo service httpd start
+chkconfig httpd on
+EOF
 }
 #-----------------------------------------------
 resource "aws_lb_target_group" "test" {
@@ -79,6 +88,13 @@ resource "aws_lb_target_group" "test" {
   protocol    = "HTTP"
   vpc_id      = module.vpc.vpc_id
   target_type = "instance"
+  health_check {
+    healthy_threshold = 2
+    unhealthy_threshold = 2
+    timeout = 3
+    target = "HTTP:80/"
+    interval = 10
+  }
 }
 resource "aws_lb_target_group_attachment" "test" {
   count            = var.count_instances
