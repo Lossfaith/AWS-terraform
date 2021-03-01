@@ -118,3 +118,6 @@ resource "aws_lb_listener" "front_end" {
   }
 }
 #-----------------------------------------------
+output "web_loadbalancer_url" {
+  value = aws_alb.balancer.dns_name
+}
