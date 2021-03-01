@@ -62,7 +62,6 @@ resource "aws_alb" "balancer" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.SerafimSecurityGroup.id]
   subnets            = module.vpc.public_subnets
-
 }
 #-----------------------------------------------
 resource "aws_instance" "master" {
@@ -90,20 +89,24 @@ resource "aws_lb_target_group" "test" {
   vpc_id      = module.vpc.vpc_id
   target_type = "instance"
   health_check {
+    enabled             = true
     path = "/"
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 3
-    target              = "HTTP:80/"
+    port                = 80
     interval            = 10
+    protocol            = "HTTP"
   }
 }
+#-------------------------------------------------
 resource "aws_lb_target_group_attachment" "test" {
   count            = var.count_instances
   target_group_arn = aws_lb_target_group.test.arn
   target_id        = aws_instance.master[count.index].id
   port             = 80
 }
+#--------------------------------------------------
 resource "aws_lb_listener" "front_end" {
   load_balancer_arn = aws_alb.balancer.arn
   port              = "80"
