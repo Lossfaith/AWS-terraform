@@ -65,18 +65,16 @@ resource "aws_alb" "balancer" {
 }
 #-----------------------------------------------
 resource "aws_instance" "master" {
-  count = var.count_instances
-
-  ami             = data.aws_ami.ubuntu.id
-  instance_type   = "t3.micro"
-  subnet_id       = module.vpc.public_subnets[count.index % length(module.vpc.public_subnets)]
-  security_groups = [aws_security_group.SerafimSecurityGroup.id]
-  user_data       = <<EOF
+  count                  = var.count_instances
+  vpc_security_group_ids = [aws_security_group.SerafimSecurityGroup.id]
+  ami                    = data.aws_ami.ubuntu.id
+  instance_type          = "t3.micro"
+  subnet_id              = module.vpc.public_subnets[count.index % length(module.vpc.public_subnets)]
+  user_data              = <<EOF
 #!/bin/bash
 yum -y update
 yum -y install httpd
-myip=`curl http://169.254.169.254/latest/meta-data/local-ipv4`
-echo "<h2> Hello! </h2><br> Artem" > /var/www/html/index.html
+echo "<h2> Hello! Artem</h2>" > /var/www/html/index.html
 sudo service httpd start
 chkconfig httpd on
 EOF
