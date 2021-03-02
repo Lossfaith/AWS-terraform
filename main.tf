@@ -90,7 +90,7 @@ resource "aws_lb_target_group" "test" {
   target_type = "instance"
   health_check {
     enabled             = true
-    path = "/"
+    path = "/var/www/html/index.html"
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 3
