@@ -92,11 +92,12 @@ resource "aws_security_group" "SerafimSecurityGroup" {
 //  subnet_id              = module.vpc.public_subnets[count.index % length(module.vpc.public_subnets)]
 //  user_data              = <<EOF
 //#!/bin/bash
-//yum -y update
-//yum -y install httpd
+//sudo apt update
+//sudo apt install nginx
+//sudo ufw allow 'Nginx HTTP'
 //echo "<h2> Hello! Artem</h2>" > /var/www/html/index.html
-//sudo service httpd start
-//chkconfig httpd on
+//sudo service nginx start
+//chkconfig nginx on
 //EOF
 //}
 //#-----------------------------------------------
