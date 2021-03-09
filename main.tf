@@ -95,7 +95,6 @@ resource "aws_instance" "master" {
 #!/bin/bash
 sudo apt update
 sudo apt install nginx
-sudo ufw allow 'Nginx HTTP'
 echo "<h2> Hello! Artem</h2>" > /var/www/html/index.html
 sudo service nginx start
 chkconfig nginx on
