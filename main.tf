@@ -90,7 +90,16 @@ resource "aws_security_group" "SerafimSecurityGroup" {
 //  ami                    = data.aws_ami.ubuntu.id
 //  instance_type          = "t3.micro"
 //  subnet_id              = module.vpc.public_subnets[count.index % length(module.vpc.public_subnets)]
-//  user_data              = file("user_data.sh")
+//  user_data              = <<EOF
+//#!/bin/bash
+//sudo apt update
+//sudo apt install nginx
+//sudo ufw allow 'Nginx HTTP'
+//echo "<h2> Hello! Artem</h2>" > /var/www/html/index.html
+//sudo service nginx start
+//chkconfig nginx on
+//EOF
+//}
 //#-----------------------------------------------
 //resource "aws_lb_target_group" "test" {
 //  name        = "tf-example-lb-tg"
