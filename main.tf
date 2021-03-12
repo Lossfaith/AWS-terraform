@@ -70,7 +70,9 @@ resource "aws_security_group" "SerafimSecurityGroup" {
 //  ami                    = data.aws_ami.ubuntu.id
 //  instance_type          = "t3.micro"
 //  subnet_id              = module.vpc.public_subnets[count.index % length(module.vpc.public_subnets)]
-//  user_data              = file("user_data.sh")
+//  user_data              = templatefile("${path.module}/user_data.sh.tmpl", {
+//  d_name = aws_route53_record.www.name
+//})
 //#-----------------------------------------------
 //resource "aws_lb_target_group" "test" {
 //  name        = "tf-example-lb-tg"

@@ -1,0 +1,32 @@
+#!/bin/bash
+sudo apt-get update
+sudo apt-get install nginx
+sudo mkdir -p /var/www/${d_name}/html
+
+cat <<EOF > /var/www/${d_name}/html/index.html
+<html>
+<head>
+<title>Welcome to ${d_name}!</title>
+</head>
+<body>
+<h1>Success!  The ${d_name} server block is working!</h1>
+</body>
+</html>
+EOF
+
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/${d_name}
+cat <<EOF > /etc/nginx/sites-available/${d_name}
+server {
+listen 80;
+listen [::]:80;
+root /var/www/${d_name}/html;
+index index.html index.htm index.nginx-debian.html;
+server_name ${d_name} www.${d_name};
+location / {
+try_files $uri $uri/ =404;
+}
+}
+EOF
+sudo ln -s /etc/nginx/sites-available/${d_name} /etc/nginx/sites-enabled/
+sudo systemctl start nginx
+sudo systemctl enable nginx
