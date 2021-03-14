@@ -82,7 +82,7 @@ resource "aws_lb_target_group" "test" {
   protocol    = "HTTP"
   vpc_id      = module.vpc.vpc_id
   target_type = "instance"
-  health_check = {
+  health_check  {
     enabled             = true
     path                = "/index.html"
     healthy_threshold   = 2
@@ -106,7 +106,7 @@ resource "aws_lb_listener" "front_end" {
   port              = "80"
   protocol          = "HTTP"
 
-  default_action = {
+  default_action  {
     target_group_arn = aws_lb_target_group
     type             = "forward"
   }
