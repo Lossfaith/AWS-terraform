@@ -72,7 +72,7 @@ resource "aws_instance" "master" {
   subnet_id              = module.vpc.public_subnets[count.index % length(module.vpc.public_subnets)]
   user_data = templatefile("${path.module}/user_data.sh.tmpl",
     {
-      d_name = aws_route53_record.www.name
+      d_name = "aws_route53_record.www.name"
   })
 }
 #-----------------------------------------------
