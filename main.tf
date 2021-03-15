@@ -67,12 +67,13 @@ resource "aws_alb" "balancer" {
 resource "aws_instance" "master" {
   count                  = var.count_instances
   vpc_security_group_ids = [aws_security_group.SerafimSecurityGroup.id]
+  iam_instance_profile   = aws_iam_instance_profile.node.id
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t3.micro"
   subnet_id              = module.vpc.public_subnets[count.index % length(module.vpc.public_subnets)]
   user_data = templatefile("${path.module}/user_data.sh.tmpl",
     {
-      d_name = "aws_route53_record.www.name"
+      d_name = aws_route53_record.www.name
   })
 }
 #-----------------------------------------------
