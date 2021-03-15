@@ -20,17 +20,17 @@ module "vpc" {
 
 }
 
-resource "aws_instance" "node" {
-  ami                    = data.aws_ami.ubuntu.id
-  instance_type          = "t3.micro"
-  subnet_id              = module.vpc.public_subnets[0]
-  iam_instance_profile   = aws_iam_instance_profile.node.id
-  vpc_security_group_ids = [aws_security_group.SerafimSecurityGroup.id]
-  key_name               = aws_key_pair.key.key_name
-  tags                   = map("Name", "Node")
-
-  user_data = templatefile("${path.module}/setup-node.sh", {})
-}
+//resource "aws_instance" "node" {
+//  ami                    = data.aws_ami.ubuntu.id
+//  instance_type          = "t3.micro"
+//  subnet_id              = module.vpc.public_subnets[0]
+//  iam_instance_profile   = aws_iam_instance_profile.node.id
+//  vpc_security_group_ids = [aws_security_group.SerafimSecurityGroup.id]
+//  key_name               = aws_key_pair.key.key_name
+//  tags                   = map("Name", "Node")
+//
+//  user_data = templatefile("${path.module}/setup-node.sh", {})
+//}
 
 #--------------------------------------------------------
 resource "aws_security_group" "SerafimSecurityGroup" {
@@ -71,6 +71,7 @@ resource "aws_instance" "master" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t3.micro"
   subnet_id              = module.vpc.public_subnets[count.index % length(module.vpc.public_subnets)]
+  tags                   = map("Name", "Nginx")
   user_data = templatefile("${path.module}/user_data.sh.tmpl",
     {
       d_name = aws_route53_record.www.name
