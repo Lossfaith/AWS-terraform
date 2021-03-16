@@ -3,8 +3,8 @@ sudo apt update
 
 sudo apt install nginx -y
 sudo mkdir -p /var/www/${d_name}/html
-sudo chown -R $USER:$USER /var/www/${d_name}/html
-sudo chmod -R 755 /var/www/${d_name}
+#sudo chown -R $USER:$USER /var/www/${d_name}/html
+#sudo chmod -R 755 /var/www/${d_name}
 
 
 cat <<EOF > /var/www/${d_name}/html/index.html
@@ -18,22 +18,17 @@ cat <<EOF > /var/www/${d_name}/html/index.html
 </html>
 EOF
 
-sudo mkdir /etc/nginx/sites-available/${d_name}
+#sudo mkdir /etc/nginx/sites-available/${d_name}
 #sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/${d_name}
 
 cat <<EOF > /etc/nginx/sites-available/${d_name}
 server {
-listen 80 default_server;
-listen [::]:80 default_server;
-root /var/www/${d_name}/html;
-index index.html index.htm index.nginx-debian.html;
+listen 80 ;
 server_name abc.lsdn.io www.abc.lsdn.io *.abc.lsdn.io;
-location / {
-index   index.html index.php;
-}
+root /var/www/${d_name}/html;
 }
 EOF
-sudo ln -s /etc/nginx/sites-available/${d_name} /etc/nginx/sites-enabled/
+#sudo ln -s /etc/nginx/sites-available/${d_name} /etc/nginx/sites-enabled/
 #sudo systemctl restart nginx
 sudo systemctl start nginx
 sudo systemctl enable nginx
