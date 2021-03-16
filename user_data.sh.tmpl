@@ -2,12 +2,12 @@
 sudo apt update
 
 sudo apt install nginx -y
-sudo mkdir -p /var/www/${d_name}/html
+
 #sudo chown -R $USER:$USER /var/www/${d_name}/html
 #sudo chmod -R 755 /var/www/${d_name}
 
-
-cat <<EOF > /var/www/${d_name}/html/index.html
+sudo mkdir -p /var/www/abc.lsdn.io/html
+cat <<EOF > /var/www/abc.lsdn.io/html/index.html
 <html>
 <head>
 <title>Welcome to ${d_name}!</title>
