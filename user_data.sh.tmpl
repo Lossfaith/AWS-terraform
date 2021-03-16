@@ -21,7 +21,7 @@ EOF
 #sudo mkdir /etc/nginx/sites-available/${d_name}
 #sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/${d_name}
 
-cat <<EOF > /etc/nginx/sites-available/${d_name}
+cat <<EOF > /etc/nginx/nginx.conf
 server {
 listen 80 ;
 server_name abc.lsdn.io www.abc.lsdn.io *.abc.lsdn.io;
