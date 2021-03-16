@@ -22,10 +22,13 @@ EOF
 #sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/${d_name}
 
 cat <<EOF > /etc/nginx/nginx.conf
+events{}
+http{
 server {
 listen 80 ;
 server_name abc.lsdn.io www.abc.lsdn.io *.abc.lsdn.io;
-root /var/www/${d_name}/html;
+root /var/www/abc.lsdn.io/html;
+}
 }
 EOF
 #sudo ln -s /etc/nginx/sites-available/${d_name} /etc/nginx/sites-enabled/
