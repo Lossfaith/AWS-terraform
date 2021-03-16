@@ -5,7 +5,7 @@ data "aws_route53_zone" "external" {
 
 resource "aws_route53_record" "www" {
   zone_id = data.aws_route53_zone.external.zone_id
-  name    = ["www.${data.aws_route53_zone.external.name}", "${data.aws_route53_zone.external.name}"]
+  name    = "*.${data.aws_route53_zone.external.name}"
   type    = "A"
   //ttl     = "300"
   //records = ["10.0.0.1"]
