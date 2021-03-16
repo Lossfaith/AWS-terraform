@@ -10,10 +10,10 @@ sudo mkdir -p /var/www/abc.lsdn.io/html
 cat <<EOF > /var/www/abc.lsdn.io/html/index.html
 <html>
 <head>
-<title>Welcome to ${d_name}!</title>
+<title>Welcome to NginX!</title>
 </head>
 <body>
-<h1>Success!  The ${d_name} server block is working!</h1>
+<h1>Success!  The NginX server block is working!</h1>
 </body>
 </html>
 EOF
@@ -26,7 +26,7 @@ events{}
 http{
 server {
 listen 80 ;
-server_name abc.lsdn.io www.abc.lsdn.io *.abc.lsdn.io;
+server_name abc.lsdn.io www.abc.lsdn.io;
 root /var/www/abc.lsdn.io/html;
 }
 }
