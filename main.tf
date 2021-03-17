@@ -75,6 +75,7 @@ resource "aws_instance" "master" {
   user_data = templatefile("${path.module}/user_data.sh.tmpl",
     {
       d_name = aws_route53_record.www.name
+
   })
 }
 #-----------------------------------------------
