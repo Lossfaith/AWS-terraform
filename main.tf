@@ -74,8 +74,8 @@ resource "aws_instance" "master" {
   tags                   = map("Name", "Nginx")
   user_data = templatefile("${path.module}/user_data.sh.tmpl",
     {
-      d_name = aws_route53_record.www.name
-
+      d_name_www = aws_route53_record.www.name
+      d_name= aws_route53_record.without_www.name
   })
 }
 #-----------------------------------------------

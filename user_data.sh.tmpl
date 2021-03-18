@@ -32,6 +32,7 @@ root /var/www/abc.lsdn.io/html;
 }
 EOF
 #sudo ln -s /etc/nginx/sites-available/${d_name} /etc/nginx/sites-enabled/
-#sudo systemctl restart nginx
+#sudo systemctl reload nginx
 sudo systemctl start nginx
 sudo systemctl enable nginx
+sudo systemctl reload nginx
